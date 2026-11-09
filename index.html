@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#080B12" />
+    <meta name="description" content="CAStudio Snake：單機貪吃蛇競技遊戲，與 1～5 條 AI 蛇同場較勁。" />
+    <title>貪吃蛇｜CAStudio Snake</title>
+    <link rel="icon" type="image/svg+xml" href="./ca-logo.svg" />
+    <script type="module" crossorigin src="./assets/index-BNBJX9Zd.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BfEv0-_5.css">
+  </head>
+  <body>
+    <div id="app">
+      <!-- ============ 首頁 ============ -->
+      <section id="screen-home" class="screen is-active" aria-label="主選單">
+        <div class="home-card">
+          <img class="logo" src="./ca-logo.svg" alt="CAStudio 標誌" width="88" height="88" />
+          <h1 class="home-title">貪吃蛇</h1>
+          <p class="home-brand">CAStudio Snake</p>
+          <p class="home-tagline">與 1～5 條 AI 蛇同場競技，比比看誰活得久、吃得多。</p>
+          <div class="home-actions">
+            <button id="btn-start" class="btn btn-primary btn-large" type="button">開始遊戲</button>
+            <button id="btn-open-settings" class="btn btn-ghost" type="button">遊戲設定</button>
+          </div>
+          <dl class="home-stats">
+            <div class="stat">
+              <dt>最佳分數</dt>
+              <dd id="home-best">0</dd>
+            </div>
+            <div class="stat">
+              <dt>總場次</dt>
+              <dd id="home-games">0</dd>
+            </div>
+            <div class="stat">
+              <dt>勝場</dt>
+              <dd id="home-wins">0</dd>
+            </div>
+          </dl>
+          <p class="home-hint">桌面：方向鍵 / WASD　·　手機：在棋盤上滑動或用方向按鈕　·　Space / Esc 暫停</p>
+        </div>
+      </section>
+
+      <!-- ============ 設定 ============ -->
+      <section id="screen-settings" class="screen" aria-label="遊戲設定">
+        <div class="settings-card">
+          <header class="settings-header">
+            <h2>遊戲設定</h2>
+            <button id="btn-settings-back" class="btn btn-ghost btn-small" type="button">返回</button>
+          </header>
+          <div class="settings-body">
+            <div class="setting-row">
+              <div class="setting-label"><span>AI 數量</span><small>1 ～ 5 條，預設 3 條</small></div>
+              <div class="seg" data-setting="aiCount" role="radiogroup" aria-label="AI 數量">
+                <button type="button" role="radio" data-value="1" aria-checked="false">1</button>
+                <button type="button" role="radio" data-value="2" aria-checked="false">2</button>
+                <button type="button" role="radio" data-value="3" aria-checked="false">3</button>
+                <button type="button" role="radio" data-value="4" aria-checked="false">4</button>
+                <button type="button" role="radio" data-value="5" aria-checked="false">5</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label"><span>AI 難度</span><small>所有難度速度與規則完全相同</small></div>
+              <div class="seg" data-setting="difficulty" role="radiogroup" aria-label="AI 難度">
+                <button type="button" role="radio" data-value="easy" aria-checked="false">簡單</button>
+                <button type="button" role="radio" data-value="normal" aria-checked="false">普通</button>
+                <button type="button" role="radio" data-value="hard" aria-checked="false">困難</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label"><span>遊戲速度</span><small>整場比賽共用同一個速度</small></div>
+              <div class="seg" data-setting="speed" role="radiogroup" aria-label="遊戲速度">
+                <button type="button" role="radio" data-value="slow" aria-checked="false">慢</button>
+                <button type="button" role="radio" data-value="normal" aria-checked="false">標準</button>
+                <button type="button" role="radio" data-value="fast" aria-checked="false">快</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label"><span>控制方式</span><small>手機與觸控裝置適用</small></div>
+              <div class="seg" data-setting="controlMode" role="radiogroup" aria-label="控制方式">
+                <button type="button" role="radio" data-value="swipe" aria-checked="false">滑動</button>
+                <button type="button" role="radio" data-value="dpad" aria-checked="false">方向按鈕</button>
+                <button type="button" role="radio" data-value="both" aria-checked="false">兩者皆可</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label"><span>音效</span><small>Web Audio 即時合成，可完全關閉</small></div>
+              <div class="seg" data-setting="sound" role="radiogroup" aria-label="音效">
+                <button type="button" role="radio" data-value="true" aria-checked="false">開</button>
+                <button type="button" role="radio" data-value="false" aria-checked="false">關</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label"><span>震動</span><small>僅在支援的裝置提供回饋</small></div>
+              <div class="seg" data-setting="vibration" role="radiogroup" aria-label="震動">
+                <button type="button" role="radio" data-value="true" aria-checked="false">開</button>
+                <button type="button" role="radio" data-value="false" aria-checked="false">關</button>
+              </div>
+            </div>
+            <div class="setting-row setting-row--danger">
+              <div class="setting-label"><span>清除本機紀錄</span><small>刪除最佳分數、勝場與近期比賽，設定會保留</small></div>
+              <button id="btn-clear-records" class="btn btn-danger btn-small" type="button">清除紀錄</button>
+            </div>
+          </div>
+          <p class="settings-note">比賽進行中無法更換 AI 數量或棋盤規則，調整後會在下一局生效。</p>
+        </div>
+      </section>
+
+      <!-- ============ 遊戲 ============ -->
+      <section id="screen-game" class="screen" aria-label="遊戲畫面">
+        <header class="hud">
+          <button id="btn-pause" class="btn btn-ghost btn-small" type="button">暫停</button>
+          <div class="hud-chips">
+            <div class="chip"><span>分數</span><strong id="hud-score">0</strong></div>
+            <div class="chip"><span>名次</span><strong id="hud-place">－</strong></div>
+            <div class="chip"><span>存活</span><strong id="hud-alive">－</strong></div>
+            <div class="chip"><span>時間</span><strong id="hud-time">3:00</strong></div>
+          </div>
+          <button id="btn-game-home" class="btn btn-ghost btn-small" type="button">首頁</button>
+        </header>
+        <div class="game-layout">
+          <div class="board-area" id="board-area">
+            <canvas id="game-canvas" aria-label="貪吃蛇遊戲棋盤，格子地圖"></canvas>
+            <div id="overlay-countdown" class="overlay-countdown hidden" aria-live="polite"></div>
+            <div id="overlay-pause" class="overlay hidden">
+              <div class="panel pause-panel">
+                <h2>已暫停</h2>
+                <p class="pause-note">所有蛇與計時器都已停止。</p>
+                <div class="pause-actions">
+                  <button id="btn-resume" class="btn btn-primary" type="button">繼續遊戲</button>
+                  <button id="btn-restart-pause" class="btn btn-ghost" type="button">重新開始</button>
+                  <button id="btn-home-pause" class="btn btn-ghost" type="button">返回首頁</button>
+                </div>
+                <div class="pause-toggles">
+                  <div class="seg seg--compact" data-setting="sound" role="radiogroup" aria-label="音效">
+                    <button type="button" role="radio" data-value="true" aria-checked="false">音效開</button>
+                    <button type="button" role="radio" data-value="false" aria-checked="false">音效關</button>
+                  </div>
+                  <div class="seg seg--compact" data-setting="vibration" role="radiogroup" aria-label="震動">
+                    <button type="button" role="radio" data-value="true" aria-checked="false">震動開</button>
+                    <button type="button" role="radio" data-value="false" aria-checked="false">震動關</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <details id="ai-panel" class="ai-panel" open>
+            <summary>對手狀態</summary>
+            <ul id="ai-list" class="ai-list"></ul>
+          </details>
+        </div>
+        <div id="dpad" class="dpad hidden" aria-label="方向控制器">
+          <button class="dpad-btn dpad-up" type="button" data-dir="up" aria-label="向上">▲</button>
+          <button class="dpad-btn dpad-left" type="button" data-dir="left" aria-label="向左">◀</button>
+          <button class="dpad-btn dpad-down" type="button" data-dir="down" aria-label="向下">▼</button>
+          <button class="dpad-btn dpad-right" type="button" data-dir="right" aria-label="向右">▶</button>
+        </div>
+      </section>
+
+      <!-- ============ 結算 ============ -->
+      <section id="screen-results" class="screen" aria-label="比賽結算">
+        <div class="results-card">
+          <p class="results-kicker" id="result-kicker">比賽結束</p>
+          <h2 id="result-title">結算</h2>
+          <p class="results-subtitle" id="result-subtitle"></p>
+          <p class="results-best hidden" id="result-best">新紀錄！刷新個人最佳分數</p>
+          <div class="result-stats" id="result-stats"></div>
+          <div class="table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th scope="col">名次</th>
+                  <th scope="col">參賽者</th>
+                  <th scope="col">分數</th>
+                  <th scope="col">食物</th>
+                  <th scope="col">狀態</th>
+                </tr>
+              </thead>
+              <tbody id="result-rows"></tbody>
+            </table>
+          </div>
+          <div class="results-actions">
+            <button id="btn-again" class="btn btn-primary" type="button">再玩一局</button>
+            <button id="btn-results-settings" class="btn btn-ghost" type="button">調整設定</button>
+            <button id="btn-results-home" class="btn btn-ghost" type="button">返回首頁</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 確認對話框 -->
+      <dialog id="confirm-dialog" class="confirm-dialog">
+        <form method="dialog" class="confirm-body">
+          <h2 id="confirm-title">確認操作</h2>
+          <p id="confirm-text"></p>
+          <div class="confirm-actions">
+            <button id="btn-confirm-cancel" class="btn btn-ghost" type="button">取消</button>
+            <button id="btn-confirm-ok" class="btn btn-danger" type="button">確認</button>
+          </div>
+        </form>
+      </dialog>
+
+      <div id="toast-root" class="toast-root" aria-live="polite"></div>
+    </div>
+  </body>
+</html>
